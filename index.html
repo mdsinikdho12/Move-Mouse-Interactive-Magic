@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultimate Interactive Orb</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(-45deg, #0a0a1a, #16213e, #1a0a2e, #000000);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        overflow: hidden;
+        perspective: 1000px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Main Orb */
+      .orb-wrapper {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        z-index: 10;
+      }
+
+      .orb {
+        width: 100%;
+        height: 100%;
+        background: url("https://scontent.fdac31-2.fna.fbcdn.net/v/t39.30808-1/605788403_841958505374572_6646969368717307696_n.jpg?stp=c249.323.577.577a_dst-jpg_s200x200_tt6&_nc_cat=104&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGNF0av4owDK2mksHK46Q2VJRwUNNTF8EQlHBQ01MXwRPp30GNXMK5WMFvMTZwi-foP_F4SgLIjmdPNoA_1Tb2H&_nc_ohc=joIqE2qbmCYQ7kNvwH-6gGo&_nc_oc=AdnKXmSLIZZG4yPzcZJnROO0e4gXhLliP8otLiCQkISsllU5MchrmGZ6-8JcH6sFoHU&_nc_zt=24&_nc_ht=scontent.fdac31-2.fna&_nc_gid=NY1i8-dGtfF-GtIFwUe-9g&oh=00_Afpqag72sLeVHOO6k-yOGbO7J1SnXVpHcRI5qvFpKNLf4A&oe=6969B4BF");
+        border-radius: 50%;
+        background-position: center;
+        background-size: cover;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 60px rgba(0, 210, 255, 0.6),
+          inset 0 0 60px rgba(0, 210, 255, 0.2);
+        transition: transform 0.05s ease-out;
+        transform-style: preserve-3d;
+        position: relative;
+      }
+
+      .orb::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        background: linear-gradient(
+          45deg,
+          rgba(0, 210, 255, 0.3),
+          rgba(255, 20, 147, 0.2)
+        );
+        animation: orbShine 3s infinite ease-in-out;
+      }
+
+      .orb::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        animation: pulse 2.5s infinite ease-in-out;
+      }
+
+      @keyframes orbShine {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 0;
+        }
+      }
+
+      /* Multiple Rotating Rings */
+      .ring {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .ring1 {
+        width: 320px;
+        height: 320px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid rgba(0, 210, 255, 0.4);
+        border-top: 5px solid #00d2ff;
+        animation: rotate 8s linear infinite;
+        z-index: 8;
+        box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+      }
+
+      .ring2 {
+        width: 380px;
+        height: 380px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid rgba(255, 20, 147, 0.3);
+        border-bottom: 5px solid #ff1493;
+        animation: rotate 10s linear infinite reverse;
+        z-index: 7;
+        box-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+      }
+
+      .ring3 {
+        width: 450px;
+        height: 450px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        border-right: 4px solid #00ff88;
+        animation: rotate 12s linear infinite;
+        z-index: 6;
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      }
+
+      @keyframes rotate {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      /* Particles */
+      .particle {
+        position: absolute;
+        pointer-events: none;
+        border-radius: 50%;
+      }
+
+      .star {
+        background: rgb(28, 255, 28);
+        opacity: 0.8;
+        filter: blur(1px);
+        animation: fadeOut 1.5s linear forwards;
+      }
+
+      .explosion-particle {
+        animation: explode 1.2s ease-out forwards;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0) translateY(-30px);
+        }
+      }
+
+      @keyframes explode {
+        0% {
+          opacity: 1;
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--tx), var(--ty)) scale(0);
+        }
+      }
+
+      h1 {
+        position: absolute;
+        bottom: 40px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 3px;
+        font-weight: 300;
+        text-transform: uppercase;
+        font-size: 12px;
+        animation: textGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes textGlow {
+        0%,
+        100% {
+          text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+        50% {
+          text-shadow: 0 0 30px rgba(0, 210, 255, 0.8);
+        }
+      }
+
+      .info {
+        position: absolute;
+        top: 40px;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 12px;
+        letter-spacing: 2px;
+      }
+
+      .pulse-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid rgba(0, 210, 255, 0.6);
+        animation: pulseRing 0.8s ease-out forwards;
+        pointer-events: none;
+      }
+
+      @keyframes pulseRing {
+        0% {
+          width: 0;
+          height: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 1;
+        }
+        100% {
+          width: 400px;
+          height: 400px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="info">✨ MOVE MOUSE • CLICK TO EXPLODE ✨</div>
+
+    <div class="container">
+      <div class="ring ring1"></div>
+      <div class="ring ring2"></div>
+      <div class="ring ring3"></div>
+
+      <div class="orb-wrapper">
+        <div class="orb" id="orb"></div>
+      </div>
+    </div>
+
+    <h1>Interactive Magic</h1>
+
+    <div id="particle-container"></div>
+
+    <script>
+      const orb = document.getElementById("orb");
+      const particleContainer = document.getElementById("particle-container");
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let lastX = mouseX;
+      let lastY = mouseY;
+
+      // Mouse Move Interaction
+      document.addEventListener("mousemove", (e) => {
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+
+        // Calculate speed
+        const deltaX = mouseX - lastX;
+        const deltaY = mouseY - lastY;
+        const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // 3D Tilt Effect
+        let xAxis = (window.innerWidth / 2 - mouseX) / 30;
+        let yAxis = (window.innerHeight / 2 - mouseY) / 30;
+        orb.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+
+        // Create trail particles based on speed
+        if (speed > 2) {
+          createTrailParticle(mouseX, mouseY, speed);
+        }
+
+        lastX = mouseX;
+        lastY = mouseY;
+      });
+
+      // Click Event - Explosion
+      document.addEventListener("click", (e) => {
+        createExplosion(e.pageX, e.pageY);
+        createPulseRing(e.pageX, e.pageY);
+      });
+
+      function createTrailParticle(x, y, speed) {
+        const star = document.createElement("div");
+        star.className = "particle star";
+
+        // Size based on speed
+        const size = Math.random() * 4 + speed * 0.3 + "px";
+        star.style.width = size;
+        star.style.height = size;
+
+        // Random offset
+        const offsetX = (Math.random() - 0.5) * 30;
+        const offsetY = (Math.random() - 0.5) * 30;
+
+        star.style.left = x + offsetX + "px";
+        star.style.top = y + offsetY + "px";
+
+        // Random colors
+        const colors = [
+          "rgb(28, 255, 28)",
+          "rgb(0, 210, 255)",
+          "rgb(255, 20, 147)",
+          "rgb(255, 255, 100)",
+        ];
+        star.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        particleContainer.appendChild(star);
+
+        setTimeout(() => star.remove(), 1500);
+      }
+
+      function createExplosion(x, y) {
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle explosion-particle";
+
+          const size = Math.random() * 6 + 3 + "px";
+          particle.style.width = size;
+          particle.style.height = size;
+          particle.style.left = x + "px";
+          particle.style.top = y + "px";
+
+          // Random burst direction
+          const angle = (i / particleCount) * Math.PI * 2;
+          const velocity = Math.random() * 150 + 100;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+
+          particle.style.setProperty("--tx", tx + "px");
+          particle.style.setProperty("--ty", ty + "px");
+
+          // Random colors for explosion
+          const colors = [
+            "rgb(0, 210, 255)",
+            "rgb(255, 20, 147)",
+            "rgb(255, 255, 100)",
+            "rgb(0, 255, 136)",
+          ];
+          particle.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+
+          particleContainer.appendChild(particle);
+
+          setTimeout(() => particle.remove(), 1200);
+        }
+      }
+
+      function createPulseRing(x, y) {
+        const ring = document.createElement("div");
+        ring.className = "pulse-ring";
+        ring.style.left = x + "px";
+        ring.style.top = y + "px";
+        particleContainer.appendChild(ring);
+
+        setTimeout(() => ring.remove(), 800);
+      }
+
+      // Continuous ambient particles
+      setInterval(() => {
+        if (Math.random() > 0.7) {
+          const randomX = Math.random() * window.innerWidth;
+          const randomY = Math.random() * window.innerHeight;
+          createTrailParticle(randomX, randomY, 2);
+        }
+      }, 200);
+    </script>
+  </body>
+</html>
